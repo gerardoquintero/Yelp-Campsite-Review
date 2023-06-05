@@ -25,12 +25,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.get('/', (req, res) => {   //basic route
     res.render('home')
 })
-
-app.get('/makecampground', async (req, res) => {   //hardcoding fake camp ground to test 
-   const camp = new Campground({title: 'My backyard'});
-   await camp.save();
-   res.send(camp)
+app.get('/campgrounds', async (req, res) => {
+    const campgrounds = await Campground.find();
+    res.render('campgrounds/index', { campgrounds }); //first part grabs, second part renders
 })
+
+// app.get('/makecampground', async (req, res) => {   //hardcoding fake camp ground to test 
+//    const camp = new Campground({title: 'My backyard'});
+//    await camp.save();
+//    res.send(camp)
+// })
 
 app.listen(3000, () => {
     console.log('Serving opn port 30000') //basic setup, it works

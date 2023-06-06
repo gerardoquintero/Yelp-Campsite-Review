@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 
@@ -14,12 +15,12 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
 });
-// logic to check if there is a error or opened  and set a reference to shorten boiler plate. 
-// just so I dont have to mention mongoose.connection.on every time
 
 const app = express();
 
+// one of many engines you can use for ejs
 
+app.engine('ejs', ejsMate)  
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
@@ -69,5 +70,5 @@ app.delete('/campgrounds/:id', async (req, res) => {
 
 
 app.listen(3000, () => {
-    console.log('Serving on port 3000') //check back to see if it works
+    console.log('Serving on port 3000')
 })

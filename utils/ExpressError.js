@@ -7,3 +7,5 @@ class ExpressError extends Error {
 }
 
 module.exports = ExpressError;
+// The utils directory was created for a async wrapper function that will be used for status code
+//  error handling and short of boilerplate 

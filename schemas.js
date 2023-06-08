@@ -9,3 +9,4 @@ module.exports.campgroundSchema = Joi.object({
         description: Joi.string().required()
     }).required()
 });
+// here for our JOI uses in our main file

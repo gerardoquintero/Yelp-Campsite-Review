@@ -36,7 +36,6 @@ const validateCampground = (req, res, next) => {
         throw new ExpressError(msg, 400)
     } else {
         next();
-        // must absoulety call next if you ever want to make it to the next correct call in sequence
     }
 }
 const validateReview = (req, res, next) => {
@@ -61,7 +60,9 @@ app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');
 })
 
+
 //  here I created validation for the server side, so people cant be sneaky with postman lol
+
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     const campground = new Campground(req.body.campground);
@@ -103,6 +104,7 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res)
 app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async (req, res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    // pulls from the Review Array
     await Review.findByIdAndDelete(reviewId);
     res.redirect(`/campgrounds/${id}`);
 }))

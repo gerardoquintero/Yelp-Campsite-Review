@@ -25,5 +25,15 @@ CampgroundSchema.post('findOneAndDelete', async function (doc) {
         })
     }
 })
+// query middleware that will pass in to that specific funstion
+CampgroundSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Review.remove({
+            _id: {
+                $in:reviews
+            }
+        })
+    }
+})
 
 module.exports = mongoose.model('Campground', CampgroundSchema);

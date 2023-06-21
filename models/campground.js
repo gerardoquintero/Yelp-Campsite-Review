@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const Review = require('./review')
 const Schema = mongoose.Schema;
@@ -15,22 +16,12 @@ const CampgroundSchema = new Schema({
         }
     ]
 });
-
+// query middleware that will pass in to that specific funstion
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
         await Review.deleteMany({
             _id: {
                 $in: doc.reviews
-            }
-        })
-    }
-})
-// query middleware that will pass in to that specific funstion
-CampgroundSchema.post('findOneAndDelete', async function (doc) {
-    if (doc) {
-        await Review.remove({
-            _id: {
-                $in:reviews
             }
         })
     }

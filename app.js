@@ -31,24 +31,29 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
+// this create a public static flash from the direcotry 
 
 const sessionConfig = {
+    // a secret is a session id cookie 
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+ // if this flag is contained on a cookie, this cannot be accessed through client side script
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
+ // start with todays date then wanting to expire after a week 1000 miliseconds in a sec and 60 minutes in a hour and etc
     }
 }
 app.use(session(sessionConfig))
 app.use(flash());
-
+// setup middle wares that will go before handlers to display flash
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
+    // must call next
 })
 
 app.use('/campgrounds', campgrounds)

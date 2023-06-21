@@ -38,6 +38,7 @@ router.get('/:id', catchAsync(async (req, res,) => {
     const campground = await Campground.findById(req.params.id).populate('reviews');
     if (!campground) {
         req.flash('error', 'Cannot find that campground!');
+        // instead of rendering just the template and redirect
         return res.redirect('/campgrounds');
     }
     res.render('campgrounds/show', { campground });

@@ -6,6 +6,9 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 
 const campgrounds = require('./routes/campgrounds');
@@ -49,6 +52,11 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash());
 // setup middle wares that will go before handlers to display flash
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate())); //use method authenticate function from passport
+passport.serializeUser(User.serializeUser()); // tell passport how to store user in session
+passport.deserializeUser(User.deserializeUser()); // tell passport how to remove user from session
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
